@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Livro, LivroRequest } from '../../core/models/livro.model';
 import { Autor } from '../../core/models/autor.model';
 import { Assunto } from '../../core/models/assunto.model';
@@ -12,6 +13,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './livros.component.html'
 })
 export class LivrosComponent implements OnInit {
+  @ViewChild('f', { static: false }) formRef: NgForm;
   livros: Livro[] = [];
   todosAutores: Autor[] = [];
   todosAssuntos: Assunto[] = [];
@@ -108,5 +110,8 @@ export class LivrosComponent implements OnInit {
     this.editingId = null;
     this.loading = false;
     this.error = '';
+    if (this.formRef) {
+      this.formRef.resetForm();
+    }
   }
 }

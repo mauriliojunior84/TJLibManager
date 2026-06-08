@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Assunto } from '../../core/models/assunto.model';
 import { AssuntoService } from '../../core/services/assunto.service';
 
@@ -7,6 +8,7 @@ import { AssuntoService } from '../../core/services/assunto.service';
   templateUrl: './assuntos.component.html'
 })
 export class AssuntosComponent implements OnInit {
+  @ViewChild('f', { static: false }) formRef: NgForm;
   assuntos: Assunto[] = [];
   form: Assunto = { descricao: '' };
   editingId: number | null = null;
@@ -56,5 +58,8 @@ export class AssuntosComponent implements OnInit {
     this.editingId = null;
     this.loading = false;
     this.error = '';
+    if (this.formRef) {
+      this.formRef.resetForm();
+    }
   }
 }

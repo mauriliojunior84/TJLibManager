@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 4200",
-    "build": "ng build --prod",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider ng serve --host 0.0.0.0 --port 4200",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider ng build --prod",
     "test": "ng test",
     "lint": "ng lint"
   },
@@ -29,6 +29,7 @@
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@types/node": "~8.9.4",
+    "cross-env": "^7.0.3",
     "typescript": "~3.5.3"
   }
 }

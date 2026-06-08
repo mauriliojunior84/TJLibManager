@@ -1,5 +1,14 @@
 package com.tjlibmanager.api.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tjlibmanager.api.dto.LivroDTO;
 import com.tjlibmanager.api.dto.LivroResponseDTO;
 import com.tjlibmanager.api.exception.ResourceNotFoundException;
@@ -9,13 +18,6 @@ import com.tjlibmanager.api.model.Livro;
 import com.tjlibmanager.api.repository.AssuntoRepository;
 import com.tjlibmanager.api.repository.AutorRepository;
 import com.tjlibmanager.api.repository.LivroRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class LivroService {
@@ -40,7 +42,7 @@ public class LivroService {
         return livroRepository.findAllWithRelations().stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    public LivroResponseDTO findById(Integer id) {
+    public LivroResponseDTO findById(int id) {
         Livro livro = livroRepository.findByIdWithRelations(id)
             .orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado: " + id));
         return toResponseDTO(livro);
@@ -50,19 +52,21 @@ public class LivroService {
     public LivroResponseDTO create(LivroDTO dto) {
         Livro livro = new Livro();
         applyDTO(livro, dto);
-        return toResponseDTO(livroRepository.save(livro));
+        Livro saved = livroRepository.save(livro);
+        return toResponseDTO(Objects.requireNonNull(saved));
     }
 
     @Transactional
-    public LivroResponseDTO update(Integer id, LivroDTO dto) {
+    public LivroResponseDTO update(int id, LivroDTO dto) {
         Livro livro = livroRepository.findByIdWithRelations(id)
             .orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado: " + id));
         applyDTO(livro, dto);
-        return toResponseDTO(livroRepository.save(livro));
+        Livro saved = livroRepository.save(livro);
+        return toResponseDTO(Objects.requireNonNull(saved));
     }
 
     @Transactional
-    public void delete(Integer id) {
+    public void delete(int id) {
         if (!livroRepository.existsById(id)) {
             throw new ResourceNotFoundException("Livro não encontrado: " + id);
         }

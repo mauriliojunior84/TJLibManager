@@ -1,14 +1,16 @@
 package com.tjlibmanager.api.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tjlibmanager.api.dto.AutorDTO;
 import com.tjlibmanager.api.exception.ResourceNotFoundException;
 import com.tjlibmanager.api.model.Autor;
 import com.tjlibmanager.api.repository.AutorRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AutorService {
@@ -23,7 +25,7 @@ public class AutorService {
         return autorRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public AutorDTO findById(Integer id) {
+    public AutorDTO findById(int id) {
         return autorRepository.findById(id).map(this::toDTO)
             .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado: " + id));
     }
@@ -35,15 +37,16 @@ public class AutorService {
     }
 
     @Transactional
-    public AutorDTO update(Integer id, AutorDTO dto) {
+    public AutorDTO update(int id, AutorDTO dto) {
         Autor autor = autorRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado: " + id));
         autor.setNome(dto.getNome());
-        return toDTO(autorRepository.save(autor));
+        Autor saved = autorRepository.save(autor);
+        return toDTO(Objects.requireNonNull(saved));
     }
 
     @Transactional
-    public void delete(Integer id) {
+    public void delete(int id) {
         if (!autorRepository.existsById(id)) {
             throw new ResourceNotFoundException("Autor não encontrado: " + id);
         }

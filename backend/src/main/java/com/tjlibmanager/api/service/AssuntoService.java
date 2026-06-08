@@ -1,14 +1,16 @@
 package com.tjlibmanager.api.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tjlibmanager.api.dto.AssuntoDTO;
 import com.tjlibmanager.api.exception.ResourceNotFoundException;
 import com.tjlibmanager.api.model.Assunto;
 import com.tjlibmanager.api.repository.AssuntoRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AssuntoService {
@@ -23,7 +25,7 @@ public class AssuntoService {
         return assuntoRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public AssuntoDTO findById(Integer id) {
+    public AssuntoDTO findById(int id) {
         return assuntoRepository.findById(id).map(this::toDTO)
             .orElseThrow(() -> new ResourceNotFoundException("Assunto não encontrado: " + id));
     }
@@ -31,19 +33,21 @@ public class AssuntoService {
     @Transactional
     public AssuntoDTO create(AssuntoDTO dto) {
         Assunto assunto = toEntity(dto);
-        return toDTO(assuntoRepository.save(assunto));
+        Assunto saved = assuntoRepository.save(assunto);
+        return toDTO(Objects.requireNonNull(saved));
     }
 
     @Transactional
-    public AssuntoDTO update(Integer id, AssuntoDTO dto) {
+    public AssuntoDTO update(int id, AssuntoDTO dto) {
         Assunto assunto = assuntoRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Assunto não encontrado: " + id));
         assunto.setDescricao(dto.getDescricao());
-        return toDTO(assuntoRepository.save(assunto));
+        Assunto saved = assuntoRepository.save(assunto);
+        return toDTO(Objects.requireNonNull(saved));
     }
 
     @Transactional
-    public void delete(Integer id) {
+    public void delete(int id) {
         if (!assuntoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Assunto não encontrado: " + id);
         }

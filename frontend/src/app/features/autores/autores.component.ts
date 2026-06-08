@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Autor } from '../../core/models/autor.model';
 import { AutorService } from '../../core/services/autor.service';
 
@@ -7,6 +8,7 @@ import { AutorService } from '../../core/services/autor.service';
   templateUrl: './autores.component.html'
 })
 export class AutoresComponent implements OnInit {
+  @ViewChild('f', { static: false }) formRef: NgForm;
   autores: Autor[] = [];
   form: Autor = { nome: '' };
   editingId: number | null = null;
@@ -56,5 +58,8 @@ export class AutoresComponent implements OnInit {
     this.editingId = null;
     this.loading = false;
     this.error = '';
+    if (this.formRef) {
+      this.formRef.resetForm();
+    }
   }
 }
