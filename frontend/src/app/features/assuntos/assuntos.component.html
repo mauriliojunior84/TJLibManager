@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Assuntos</h2>
+
+  <div *ngIf="error" class="alert alert-danger alert-dismissible">
+    {{ error }}
+    <button type="button" class="close" (click)="error=''"><span>&times;</span></button>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ editingId ? 'Editar Assunto' : 'Novo Assunto' }}</h5>
+      <form (ngSubmit)="save()" #f="ngForm">
+        <div class="form-group">
+          <label>Descrição</label>
+          <input class="form-control" [(ngModel)]="form.descricao" name="descricao"
+                 maxlength="20" required #desc="ngModel">
+          <div *ngIf="desc.invalid && desc.touched" class="text-danger small">Descrição é obrigatória (máx. 20 caracteres).</div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid || loading">
+          {{ loading ? 'Salvando...' : (editingId ? 'Atualizar' : 'Cadastrar') }}
+        </button>
+        <button *ngIf="editingId" type="button" class="btn btn-secondary ml-2" (click)="reset()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>#</th>
+            <th>Descrição</th>
+            <th class="text-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of assuntos">
+            <td>{{ a.codAs }}</td>
+            <td>{{ a.descricao }}</td>
+            <td class="text-right">
+              <button class="btn btn-sm btn-outline-primary mr-1" (click)="edit(a)">Editar</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="delete(a.codAs)">Excluir</button>
+            </td>
+          </tr>
+          <tr *ngIf="assuntos.length === 0">
+            <td colspan="3" class="text-center text-muted">Nenhum assunto cadastrado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

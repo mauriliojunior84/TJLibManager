@@ -1,0 +1,109 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Livros</h2>
+
+  <div *ngIf="error" class="alert alert-danger alert-dismissible">
+    {{ error }}
+    <button type="button" class="close" (click)="error=''"><span>&times;</span></button>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ editingId ? 'Editar Livro' : 'Novo Livro' }}</h5>
+      <form (ngSubmit)="save()" #f="ngForm">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Título *</label>
+            <input class="form-control" [(ngModel)]="form.titulo" name="titulo"
+                   maxlength="40" required #titulo="ngModel">
+            <div *ngIf="titulo.invalid && titulo.touched" class="text-danger small">Título é obrigatório.</div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Editora</label>
+            <input class="form-control" [(ngModel)]="form.editora" name="editora" maxlength="40">
+          </div>
+          <div class="col-md-3 form-group">
+            <label>Edição</label>
+            <input class="form-control" type="number" [(ngModel)]="form.edicao" name="edicao" min="1">
+          </div>
+          <div class="col-md-3 form-group">
+            <label>Ano de Publicação</label>
+            <input class="form-control" [(ngModel)]="form.anoPublicacao" name="anoPublicacao"
+                   maxlength="4" pattern="\d{4}" placeholder="AAAA" #ano="ngModel">
+            <div *ngIf="ano.invalid && ano.touched" class="text-danger small">Ano inválido (4 dígitos).</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Autores</label>
+            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+              <div *ngFor="let a of todosAutores" class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       [id]="'autor-' + a.codAu"
+                       [checked]="isAutorSelected(a.codAu)"
+                       (change)="toggleAutor(a.codAu)">
+                <label class="form-check-label" [for]="'autor-' + a.codAu">{{ a.nome }}</label>
+              </div>
+              <span *ngIf="todosAutores.length === 0" class="text-muted small">Nenhum autor cadastrado.</span>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Assuntos</label>
+            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+              <div *ngFor="let a of todosAssuntos" class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       [id]="'assunto-' + a.codAs"
+                       [checked]="isAssuntoSelected(a.codAs)"
+                       (change)="toggleAssunto(a.codAs)">
+                <label class="form-check-label" [for]="'assunto-' + a.codAs">{{ a.descricao }}</label>
+              </div>
+              <span *ngIf="todosAssuntos.length === 0" class="text-muted small">Nenhum assunto cadastrado.</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid || loading">
+          {{ loading ? 'Salvando...' : (editingId ? 'Atualizar' : 'Cadastrar') }}
+        </button>
+        <button *ngIf="editingId" type="button" class="btn btn-secondary ml-2" (click)="reset()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Editora</th>
+            <th>Edição</th>
+            <th>Ano</th>
+            <th>Autores</th>
+            <th>Assuntos</th>
+            <th class="text-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of livros">
+            <td>{{ l.codl }}</td>
+            <td>{{ l.titulo }}</td>
+            <td>{{ l.editora || '—' }}</td>
+            <td>{{ l.edicao || '—' }}</td>
+            <td>{{ l.anoPublicacao || '—' }}</td>
+            <td>{{ nomeAutores(l) }}</td>
+            <td>{{ nomeAssuntos(l) }}</td>
+            <td class="text-right">
+              <button class="btn btn-sm btn-outline-primary mr-1" (click)="edit(l)">Editar</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="delete(l.codl)">Excluir</button>
+            </td>
+          </tr>
+          <tr *ngIf="livros.length === 0">
+            <td colspan="8" class="text-center text-muted">Nenhum livro cadastrado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
