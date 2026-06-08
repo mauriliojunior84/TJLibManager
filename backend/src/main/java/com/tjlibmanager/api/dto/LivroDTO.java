@@ -1,8 +1,11 @@
 package com.tjlibmanager.api.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.Set;
 
 public class LivroDTO {
@@ -21,6 +24,10 @@ public class LivroDTO {
     @Pattern(regexp = "\\d{4}", message = "Ano deve conter 4 dígitos")
     private String anoPublicacao;
 
+    @NotNull(message = "Valor é obrigatório")
+    @PositiveOrZero(message = "Valor não pode ser negativo")
+    private BigDecimal valor;
+
     private Set<Integer> autoresIds;
     private Set<Integer> assuntosIds;
 
@@ -38,6 +45,9 @@ public class LivroDTO {
 
     public String getAnoPublicacao() { return anoPublicacao; }
     public void setAnoPublicacao(String anoPublicacao) { this.anoPublicacao = anoPublicacao; }
+
+    public BigDecimal getValor() { return valor; }
+    public void setValor(BigDecimal valor) { this.valor = valor; }
 
     public Set<Integer> getAutoresIds() { return autoresIds; }
     public void setAutoresIds(Set<Integer> autoresIds) { this.autoresIds = autoresIds; }

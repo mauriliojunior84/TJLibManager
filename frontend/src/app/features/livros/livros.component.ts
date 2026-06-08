@@ -66,6 +66,7 @@ export class LivrosComponent implements OnInit {
       editora: livro.editora,
       edicao: livro.edicao,
       anoPublicacao: livro.anoPublicacao,
+      valor: livro.valor,
       autoresIds: (livro.autores || []).map(a => a.codAu),
       assuntosIds: (livro.assuntos || []).map(a => a.codAs)
     };
@@ -106,7 +107,7 @@ export class LivrosComponent implements OnInit {
   }
 
   reset() {
-    this.form = { titulo: '', autoresIds: [], assuntosIds: [] };
+    this.form = { titulo: '', valor: 0, autoresIds: [], assuntosIds: [] };
     this.editingId = null;
     this.loading = false;
     this.error = '';

@@ -1,5 +1,6 @@
 package com.tjlibmanager.api.dto;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 public class LivroResponseDTO {
@@ -9,6 +10,7 @@ public class LivroResponseDTO {
     private String editora;
     private Integer edicao;
     private String anoPublicacao;
+    private BigDecimal valor;
     private Set<AutorDTO> autores;
     private Set<AssuntoDTO> assuntos;
 
@@ -26,6 +28,9 @@ public class LivroResponseDTO {
 
     public String getAnoPublicacao() { return anoPublicacao; }
     public void setAnoPublicacao(String anoPublicacao) { this.anoPublicacao = anoPublicacao; }
+
+    public BigDecimal getValor() { return valor; }
+    public void setValor(BigDecimal valor) { this.valor = valor; }
 
     public Set<AutorDTO> getAutores() { return autores; }
     public void setAutores(Set<AutorDTO> autores) { this.autores = autores; }

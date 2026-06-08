@@ -78,6 +78,7 @@ public class LivroService {
         livro.setEditora(dto.getEditora());
         livro.setEdicao(dto.getEdicao());
         livro.setAnoPublicacao(dto.getAnoPublicacao());
+        livro.setValor(dto.getValor());
 
         Set<Autor> autores = new HashSet<>();
         if (dto.getAutoresIds() != null) {
@@ -107,6 +108,7 @@ public class LivroService {
         dto.setEditora(l.getEditora());
         dto.setEdicao(l.getEdicao());
         dto.setAnoPublicacao(l.getAnoPublicacao());
+        dto.setValor(l.getValor());
         dto.setAutores(l.getAutores().stream().map(autorService::toDTO).collect(Collectors.toSet()));
         dto.setAssuntos(l.getAssuntos().stream().map(assuntoService::toDTO).collect(Collectors.toSet()));
         return dto;

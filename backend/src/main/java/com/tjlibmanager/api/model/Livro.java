@@ -2,8 +2,11 @@ package com.tjlibmanager.api.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +35,11 @@ public class Livro {
     @Size(max = 4)
     @Column(name = "AnoPublicacao", length = 4)
     private String anoPublicacao;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "Valor", nullable = false, precision = 10, scale = 2)
+    private BigDecimal valor;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
@@ -63,6 +71,9 @@ public class Livro {
 
     public String getAnoPublicacao() { return anoPublicacao; }
     public void setAnoPublicacao(String anoPublicacao) { this.anoPublicacao = anoPublicacao; }
+
+    public BigDecimal getValor() { return valor; }
+    public void setValor(BigDecimal valor) { this.valor = valor; }
 
     public Set<Autor> getAutores() { return autores; }
     public void setAutores(Set<Autor> autores) { this.autores = autores; }

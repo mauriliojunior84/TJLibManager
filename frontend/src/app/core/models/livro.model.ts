@@ -7,6 +7,7 @@ export interface Livro {
   editora?: string;
   edicao?: number;
   anoPublicacao?: string;
+  valor?: number;
   autores?: Autor[];
   assuntos?: Assunto[];
 }
@@ -16,6 +17,7 @@ export interface LivroRequest {
   editora?: string;
   edicao?: number;
   anoPublicacao?: string;
+  valor?: number;
   autoresIds: number[];
   assuntosIds: number[];
 }
