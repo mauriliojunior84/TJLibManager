@@ -1,171 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="livros_por_autor" pageWidth="595" pageHeight="842" columnWidth="555"
-              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-
-    <field name="autorNome" class="java.lang.String"/>
-    <field name="livroCodigo" class="java.lang.Integer"/>
-    <field name="titulo" class="java.lang.String"/>
-    <field name="editora" class="java.lang.String"/>
-    <field name="edicao" class="java.lang.Integer"/>
-    <field name="anoPublicacao" class="java.lang.String"/>
-    <field name="valor" class="java.math.BigDecimal"/>
-    <field name="assuntos" class="java.lang.String"/>
-
-    <variable name="qtdLivrosAutor" class="java.lang.Integer" resetType="Group" resetGroup="Autor" calculation="Count">
-        <variableExpression><![CDATA[$F{livroCodigo}]]></variableExpression>
-    </variable>
-    <variable name="valorTotalAutor" class="java.math.BigDecimal" resetType="Group" resetGroup="Autor" calculation="Sum">
-        <variableExpression><![CDATA[$F{valor}]]></variableExpression>
-    </variable>
-    <variable name="valorTotalGeral" class="java.math.BigDecimal" calculation="Sum">
-        <variableExpression><![CDATA[$F{valor}]]></variableExpression>
-    </variable>
-
-    <group name="Autor">
-        <groupExpression><![CDATA[$F{autorNome}]]></groupExpression>
-        <groupHeader>
-            <band height="28">
-                <rectangle>
-                    <reportElement x="0" y="4" width="555" height="22" backcolor="#E9ECEF" mode="Opaque"/>
-                    <graphicElement>
-                        <pen lineWidth="0.0"/>
-                    </graphicElement>
-                </rectangle>
-                <staticText>
-                    <reportElement x="6" y="7" width="60" height="16"/>
-                    <textElement><font size="11" isBold="true"/></textElement>
-                    <text><![CDATA[Autor:]]></text>
-                </staticText>
-                <textField>
-                    <reportElement x="66" y="7" width="489" height="16"/>
-                    <textElement><font size="11" isBold="true"/></textElement>
-                    <textFieldExpression><![CDATA[$F{autorNome}]]></textFieldExpression>
-                </textField>
-            </band>
-        </groupHeader>
-        <groupFooter>
-            <band height="22">
-                <textField>
-                    <reportElement x="0" y="2" width="375" height="16"/>
-                    <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
-                    <textFieldExpression><![CDATA["Livros do autor: " + $V{qtdLivrosAutor} + "   |   Total: "]]></textFieldExpression>
-                </textField>
-                <textField pattern="¤ #,##0.00">
-                    <reportElement x="375" y="2" width="180" height="16"/>
-                    <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
-                    <textFieldExpression><![CDATA[$V{valorTotalAutor}]]></textFieldExpression>
-                </textField>
-                <line>
-                    <reportElement x="0" y="20" width="555" height="1"/>
-                </line>
-            </band>
-        </groupFooter>
-    </group>
-
-    <title>
-        <band height="40">
-            <staticText>
-                <reportElement x="0" y="0" width="555" height="24"/>
-                <textElement textAlignment="Center"><font size="16" isBold="true"/></textElement>
-                <text><![CDATA[Relatório de Livros por Autor]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="0" y="26" width="555" height="12"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA["Emitido em " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
-            </textField>
-        </band>
-    </title>
-
-    <columnHeader>
-        <band height="18">
-            <staticText>
-                <reportElement x="0" y="0" width="150" height="16"/>
-                <textElement><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[Título]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="150" y="0" width="95" height="16"/>
-                <textElement><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[Editora]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="245" y="0" width="40" height="16"/>
-                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[Ed.]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="285" y="0" width="40" height="16"/>
-                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[Ano]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="325" y="0" width="140" height="16"/>
-                <textElement><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[Assuntos]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="465" y="0" width="90" height="16"/>
-                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[Valor]]></text>
-            </staticText>
-        </band>
-    </columnHeader>
-
-    <detail>
-        <band height="16">
-            <textField isStretchWithOverflow="true">
-                <reportElement x="0" y="0" width="150" height="14"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement x="150" y="0" width="95" height="14"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{editora}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="245" y="0" width="40" height="14"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{edicao}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="285" y="0" width="40" height="14"/>
-                <textElement textAlignment="Center"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{anoPublicacao}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement x="325" y="0" width="140" height="14"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{assuntos}]]></textFieldExpression>
-            </textField>
-            <textField pattern="¤ #,##0.00">
-                <reportElement x="465" y="0" width="90" height="14"/>
-                <textElement textAlignment="Right"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
-            </textField>
-        </band>
-    </detail>
-
-    <summary>
-        <band height="26">
-            <line>
-                <reportElement x="0" y="2" width="555" height="1"/>
-            </line>
-            <staticText>
-                <reportElement x="0" y="6" width="375" height="16"/>
-                <textElement textAlignment="Right"><font size="10" isBold="true"/></textElement>
-                <text><![CDATA[Valor total geral:]]></text>
-            </staticText>
-            <textField pattern="¤ #,##0.00">
-                <reportElement x="375" y="6" width="180" height="16"/>
-                <textElement textAlignment="Right"><font size="10" isBold="true"/></textElement>
-                <textFieldExpression><![CDATA[$V{valorTotalGeral}]]></textFieldExpression>
-            </textField>
-        </band>
-    </summary>
-
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2026-06-09T19:41:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="livros_por_autor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f0d76559-cc39-477c-9a53-7fedf6cfcca8">
+	<field name="autorNome" class="java.lang.String"/>
+	<field name="livroCodigo" class="java.lang.Integer"/>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="editora" class="java.lang.String"/>
+	<field name="edicao" class="java.lang.Integer"/>
+	<field name="anoPublicacao" class="java.lang.String"/>
+	<field name="valor" class="java.math.BigDecimal"/>
+	<field name="assuntos" class="java.lang.String"/>
+	<variable name="qtdLivrosAutor" class="java.lang.Integer" resetType="Group" resetGroup="Autor" calculation="Count">
+		<variableExpression><![CDATA[$F{livroCodigo}]]></variableExpression>
+	</variable>
+	<variable name="valorTotalAutor" class="java.math.BigDecimal" resetType="Group" resetGroup="Autor" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valorTotalGeral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<group name="Autor">
+		<groupExpression><![CDATA[$F{autorNome}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="4" width="555" height="22" backcolor="#E9ECEF" uuid="601aec6f-022f-458f-9807-837319316b5a"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="6" y="7" width="60" height="16" uuid="0a8d8403-f790-4774-88bd-76c04504fd13"/>
+					<textElement>
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Autor:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="66" y="7" width="489" height="16" uuid="7e06881a-04c0-412d-acd2-96a5e78965ed"/>
+					<textElement>
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{autorNome}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<textField>
+					<reportElement x="0" y="2" width="375" height="16" uuid="3468edb8-9b08-4612-aa38-69a77a84ffb4"/>
+					<textElement textAlignment="Right">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Livros do autor: " + $V{qtdLivrosAutor} + "   |   Total: "]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="375" y="2" width="180" height="16" uuid="72452dd4-8b8d-4f81-9d7c-8bc9c6a8026c"/>
+					<textElement textAlignment="Right">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{valorTotalAutor}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="20" width="555" height="1" uuid="5288af1f-3452-410a-b869-4a1e6c0c3899"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="24" uuid="ebedf1dd-06e5-4c4f-9312-b9aadccedf28"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Livros por Autor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="26" width="555" height="12" uuid="b9f84c98-ce03-4103-9fda-1f886e41ec96"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Emitido em " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="18">
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="16" uuid="d76de642-ac5b-4bae-8c9a-e300931ad893"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Título]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="95" height="16" uuid="a0a88a11-b6b1-4e3d-8650-bc1df16fa61d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Editora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="0" width="40" height="16" uuid="7c64bf21-7d3e-4d4f-a37a-d191a2265a82"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ed.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="0" width="40" height="16" uuid="e82f0a83-bcfb-4197-a8b5-685e80144819"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ano]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="325" y="0" width="140" height="16" uuid="619bec79-2294-4b59-aa6f-87970872ef89"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assuntos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="465" y="0" width="90" height="16" uuid="8be63318-2f87-4f2f-8d19-bf3727f4c074"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="150" height="14" uuid="e28dc90d-5187-43a1-811a-2a794c134e9e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="150" y="0" width="95" height="14" uuid="e108b3e2-beef-4eaf-abea-91de1c06d00f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{editora}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="245" y="0" width="40" height="14" uuid="b167cb04-f23e-4323-9c1b-834cda3c8719"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edicao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="285" y="0" width="40" height="14" uuid="73ce1859-6ca0-4fba-92b7-8530c3bd35da"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anoPublicacao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="325" y="0" width="140" height="14" uuid="57525fa6-bf67-408c-8c52-f4f72903b1ce"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{assuntos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="465" y="0" width="90" height="14" uuid="f92205b3-3442-475a-8b8e-7155a1bc59b2"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="26">
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="ba8138b6-82a5-4174-a4e8-9f3f70690cb7"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="6" width="375" height="16" uuid="7b6e31eb-9ed6-45c6-a19e-04ff638c26ca"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor total geral:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="375" y="6" width="180" height="16" uuid="a6c28a02-16e4-4043-b9df-1fb54ddcb588"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{valorTotalGeral}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>
