@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { LivrosComponent } from './features/livros/livros.component';
 import { AutoresComponent } from './features/autores/autores.component';
 import { AssuntosComponent } from './features/assuntos/assuntos.component';
+import { RelatorioComponent } from './features/relatorio/relatorio.component';
 
 registerLocaleData(localePt);
 
@@ -18,7 +19,8 @@ registerLocaleData(localePt);
     AppComponent,
     LivrosComponent,
     AutoresComponent,
-    AssuntosComponent
+    AssuntosComponent,
+    RelatorioComponent
   ],
   imports: [
     BrowserModule,

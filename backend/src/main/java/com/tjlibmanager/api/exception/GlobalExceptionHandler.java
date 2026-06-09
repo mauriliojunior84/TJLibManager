@@ -28,4 +28,11 @@ public class GlobalExceptionHandler {
         }
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(ReportGenerationException.class)
+    public ResponseEntity<Map<String, String>> handleReport(ReportGenerationException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
 }
