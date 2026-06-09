@@ -8,17 +8,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tjlibmanager.api.dto.AssuntoDTO;
+import com.tjlibmanager.api.exception.ResourceInUseException;
 import com.tjlibmanager.api.exception.ResourceNotFoundException;
 import com.tjlibmanager.api.model.Assunto;
 import com.tjlibmanager.api.repository.AssuntoRepository;
+import com.tjlibmanager.api.repository.LivroRepository;
 
 @Service
 public class AssuntoService {
 
     private final AssuntoRepository assuntoRepository;
+    private final LivroRepository livroRepository;
 
-    public AssuntoService(AssuntoRepository assuntoRepository) {
+    public AssuntoService(AssuntoRepository assuntoRepository, LivroRepository livroRepository) {
         this.assuntoRepository = assuntoRepository;
+        this.livroRepository = livroRepository;
     }
 
     public List<AssuntoDTO> findAll() {
@@ -50,6 +54,11 @@ public class AssuntoService {
     public void delete(int id) {
         if (!assuntoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Assunto não encontrado: " + id);
+        }
+        long vinculos = livroRepository.countByAssuntos_CodAs(id);
+        if (vinculos > 0) {
+            throw new ResourceInUseException(
+                "Assunto não pode ser excluído pois está vinculado a " + vinculos + " livro(s).");
         }
         assuntoRepository.deleteById(id);
     }

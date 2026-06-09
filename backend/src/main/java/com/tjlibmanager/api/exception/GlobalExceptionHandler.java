@@ -1,5 +1,6 @@
 package com.tjlibmanager.api.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -34,5 +35,19 @@ public class GlobalExceptionHandler {
         Map<String, String> body = new HashMap<>();
         body.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(ResourceInUseException.class)
+    public ResponseEntity<Map<String, String>> handleInUse(ResourceInUseException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleIntegrity(DataIntegrityViolationException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "Operação viola uma restrição de integridade dos dados.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 }

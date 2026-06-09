@@ -49,7 +49,7 @@ export class AutoresComponent implements OnInit {
     if (!confirm('Confirmar exclusão?')) { return; }
     this.autorService.delete(id).subscribe(
       () => this.load(),
-      () => this.error = 'Erro ao excluir autor.'
+      err => this.error = (err.error && err.error.error) || 'Erro ao excluir autor.'
     );
   }
 

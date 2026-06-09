@@ -8,17 +8,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tjlibmanager.api.dto.AutorDTO;
+import com.tjlibmanager.api.exception.ResourceInUseException;
 import com.tjlibmanager.api.exception.ResourceNotFoundException;
 import com.tjlibmanager.api.model.Autor;
 import com.tjlibmanager.api.repository.AutorRepository;
+import com.tjlibmanager.api.repository.LivroRepository;
 
 @Service
 public class AutorService {
 
     private final AutorRepository autorRepository;
+    private final LivroRepository livroRepository;
 
-    public AutorService(AutorRepository autorRepository) {
+    public AutorService(AutorRepository autorRepository, LivroRepository livroRepository) {
         this.autorRepository = autorRepository;
+        this.livroRepository = livroRepository;
     }
 
     public List<AutorDTO> findAll() {
@@ -49,6 +53,11 @@ public class AutorService {
     public void delete(int id) {
         if (!autorRepository.existsById(id)) {
             throw new ResourceNotFoundException("Autor não encontrado: " + id);
+        }
+        long vinculos = livroRepository.countByAutores_CodAu(id);
+        if (vinculos > 0) {
+            throw new ResourceInUseException(
+                "Autor não pode ser excluído pois está vinculado a " + vinculos + " livro(s).");
         }
         autorRepository.deleteById(id);
     }

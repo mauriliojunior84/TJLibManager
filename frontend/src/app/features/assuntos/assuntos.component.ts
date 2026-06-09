@@ -49,7 +49,7 @@ export class AssuntosComponent implements OnInit {
     if (!confirm('Confirmar exclusão?')) { return; }
     this.assuntoService.delete(id).subscribe(
       () => this.load(),
-      () => this.error = 'Erro ao excluir assunto.'
+      err => this.error = (err.error && err.error.error) || 'Erro ao excluir assunto.'
     );
   }
 

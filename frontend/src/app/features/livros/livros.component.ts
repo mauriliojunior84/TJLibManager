@@ -76,7 +76,7 @@ export class LivrosComponent implements OnInit {
     if (!confirm('Confirmar exclusão?')) { return; }
     this.livroService.delete(id).subscribe(
       () => this.load(),
-      () => this.error = 'Erro ao excluir livro.'
+      err => this.error = (err.error && err.error.error) || 'Erro ao excluir livro.'
     );
   }
 

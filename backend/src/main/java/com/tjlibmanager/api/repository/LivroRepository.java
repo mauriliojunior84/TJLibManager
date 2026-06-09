@@ -15,4 +15,8 @@ public interface LivroRepository extends JpaRepository<Livro, Integer> {
 
     @Query("SELECT l FROM Livro l LEFT JOIN FETCH l.autores LEFT JOIN FETCH l.assuntos WHERE l.codl = :id")
     Optional<Livro> findByIdWithRelations(@Param("id") Integer id);
+
+    long countByAutores_CodAu(Integer codAu);
+
+    long countByAssuntos_CodAs(Integer codAs);
 }
