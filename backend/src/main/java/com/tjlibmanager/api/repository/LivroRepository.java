@@ -19,4 +19,6 @@ public interface LivroRepository extends JpaRepository<Livro, Integer> {
     long countByAutores_CodAu(Integer codAu);
 
     long countByAssuntos_CodAs(Integer codAs);
+
+    boolean existsByTituloIgnoreCaseAndEditoraIgnoreCase(String titulo, String editora);
 }

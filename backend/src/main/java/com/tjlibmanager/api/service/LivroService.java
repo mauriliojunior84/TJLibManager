@@ -18,6 +18,7 @@ import com.tjlibmanager.api.model.Livro;
 import com.tjlibmanager.api.repository.AssuntoRepository;
 import com.tjlibmanager.api.repository.AutorRepository;
 import com.tjlibmanager.api.repository.LivroRepository;
+import com.tjlibmanager.api.validation.LivroValidacaoChain;
 
 @Service
 public class LivroService {
@@ -27,15 +28,17 @@ public class LivroService {
     private final AssuntoRepository assuntoRepository;
     private final AutorService autorService;
     private final AssuntoService assuntoService;
+    private final LivroValidacaoChain validacaoChain;
 
     public LivroService(LivroRepository livroRepository, AutorRepository autorRepository,
                         AssuntoRepository assuntoRepository, AutorService autorService,
-                        AssuntoService assuntoService) {
+                        AssuntoService assuntoService, LivroValidacaoChain validacaoChain) {
         this.livroRepository = livroRepository;
         this.autorRepository = autorRepository;
         this.assuntoRepository = assuntoRepository;
         this.autorService = autorService;
         this.assuntoService = assuntoService;
+        this.validacaoChain = validacaoChain;
     }
 
     public List<LivroResponseDTO> findAll() {
@@ -50,6 +53,7 @@ public class LivroService {
 
     @Transactional
     public LivroResponseDTO create(LivroDTO dto) {
+        validacaoChain.validar(dto);
         Livro livro = new Livro();
         applyDTO(livro, dto);
         Livro saved = livroRepository.save(livro);
@@ -58,6 +62,7 @@ public class LivroService {
 
     @Transactional
     public LivroResponseDTO update(int id, LivroDTO dto) {
+        validacaoChain.validar(dto);
         Livro livro = livroRepository.findByIdWithRelations(id)
             .orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado: " + id));
         applyDTO(livro, dto);

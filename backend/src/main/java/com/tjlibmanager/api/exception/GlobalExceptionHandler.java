@@ -37,6 +37,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<Map<String, String>> handleValidacao(ValidacaoException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        return ResponseEntity.badRequest().body(body);
+    }
+
     @ExceptionHandler(ResourceInUseException.class)
     public ResponseEntity<Map<String, String>> handleInUse(ResourceInUseException ex) {
         Map<String, String> body = new HashMap<>();
